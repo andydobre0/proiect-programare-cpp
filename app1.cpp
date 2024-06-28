@@ -4,6 +4,7 @@ int main(int argc, char* argv[]){
     Admin admin;
     std::cout << "commands:\n *add_job\n *delete_job [provide id of the job you wish to delete]\n";
     std::cout << " *modify_job [provide id of the job you wish to delete]\n";
+    std::cout << " *view_jobs\n";
     if(argc < 2){
         std::cout << "Usage: ./app1.exe <command> [arguments]" << std::endl; 
         return 1;
@@ -24,4 +25,13 @@ int main(int argc, char* argv[]){
             skillsVector.push_back(skill);
         admin.addJob(title, skillsVector);
     }
+    else if (command=="view_jobs")
+    {
+        if(argc != 2){
+            std::cout << "Usage ./app1.exe view_jobs";
+            return 1;
+        }
+        admin.viewJobs();
+    }
+    
 }

@@ -8,7 +8,7 @@
 class Admin : public User
 {
 private:
-    std::vector<Job> announcements;
+    int highestJobId;
 public:
     Admin();
     void addJob(const std::string&, const std::vector<std::string>&);
@@ -17,6 +17,7 @@ public:
     void modifyJobSkills(int, const std::string&);
     void viewCandidates(int);
     void modifyFile();
+    
 };
 
 

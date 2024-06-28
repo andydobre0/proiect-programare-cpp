@@ -2,7 +2,7 @@
 
 
 Admin::Admin() : User(0, "admin", "admin@admin.com"){
-    std::ifstream jobsFile("/jobs.csv");
+    std::ifstream jobsFile("shared/jobs.csv");
     if(jobsFile.is_open()){
         std::string line;
         std::getline(jobsFile, line);
@@ -12,6 +12,7 @@ Admin::Admin() : User(0, "admin", "admin@admin.com"){
             std::getline(ss, idStr, ',');
             std::getline(ss, title, ',');
             int id = std::stoi(idStr);
+            highestJobId = std::max(id, highestJobId);
             Job job(id, title);
 
             std::string skill;
@@ -26,10 +27,11 @@ Admin::Admin() : User(0, "admin", "admin@admin.com"){
         }
         jobsFile.close();
     }
+    highestJobId = std::max(1, highestJobId);
 }
 
 void Admin::modifyFile(){
-    std::ofstream jobsFile("/jobs.csv");
+    std::ofstream jobsFile("shared/jobs.csv");
     if(jobsFile.is_open()){
         jobsFile << announcements.size() << std::endl;
         for(const auto& job: announcements){
@@ -41,13 +43,20 @@ void Admin::modifyFile(){
 }
 
 void Admin::addJob(const std::string& title, const std::vector<std::string>& skills){
-    int id = announcements.size() + 1;
+    auto it = std::find_if(announcements.begin(), announcements.end(),
+                           [&title](const Job& job) { return job.getTitle() == title; });
+    if (it != announcements.end()) {
+        std::cout << "A job with this title already exists. ID: " << it->getId() << std::endl;
+        return;
+    }
+    int id = highestJobId+1;
+    highestJobId = id;
     Job job(id, title);
     for(const auto& skill : skills)
         job.setSkill(skill);
     announcements.push_back(job);
 
-    std::ofstream jobsFile("/jobs.csv", std::ios::app);
+    std::ofstream jobsFile("shared/jobs.csv", std::ios::app);
     if(jobsFile.is_open()){
         jobsFile << id << ',' << title;
         for(const auto& skill : skills)
@@ -90,3 +99,4 @@ void Admin::viewCandidates(int id){
             std::cout << candidate << std::endl;
     } else std::cout<<"job with id " << id << " not found." << std::endl;
 }
+

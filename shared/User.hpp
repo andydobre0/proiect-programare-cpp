@@ -5,10 +5,11 @@
 
 class User
 {
-private:
+protected:
     int id;
     std::string name;
     std::string email;
+    std::vector<Job> announcements;
     std::vector<Job> appliedJobs;
 public:
     User(int, const std::string&, const std::string&);
@@ -19,6 +20,7 @@ public:
     std::vector<Job> getAppliedJobs() const {return appliedJobs;}
 
     void applyJob(const Job&);
+    void viewJobs();
     // ~User();
 
     // friend std::ostream& operator<<(std::ostream&, const User&);
