@@ -7,23 +7,28 @@ class User
 {
 protected:
     int id;
-    std::string name;
+    static int userCount;
     std::string email;
     std::vector<Job> announcements;
-    std::vector<Job> appliedJobs;
+    std::vector<int> appliedJobs;
 public:
-    User(int, const std::string&, const std::string&);
+    User(){}
+    User(const std::string&);
 
     int getId() const{return id;}
-    std::string getName() const {return name;}
     std::string getEmail() const {return email;}
-    std::vector<Job> getAppliedJobs() const {return appliedJobs;}
+    std::vector<int> getAppliedJobs() const {return appliedJobs;}
 
-    void applyJob(const Job&);
+    void setEmail(std::string email){this->email = email;}
+    void applyForJob(int);
     void viewJobs();
-    // ~User();
+    void filterJobs(const std::string& skill);
 
-    // friend std::ostream& operator<<(std::ostream&, const User&);
+    static int getUserCount();
+    static void incrementUserCount();
+    static void loadUserCount();
+    static void saveUserCount();
+    // ~User();
 };
 
 
